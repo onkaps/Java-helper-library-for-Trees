@@ -15,7 +15,7 @@ public class BinaryTree<T extends Comparable<T>> extends tree.tree{
     private Node<T> root;
 
     //Using hard coded values to populate the tree - node values are entered by the programmer.
-    public void insert(T data) {
+    public void insert(Node<T> root, T data) {
         if (data == null)
             throw new IllegalArgumentException("Data cannot be null");
 
@@ -25,21 +25,21 @@ public class BinaryTree<T extends Comparable<T>> extends tree.tree{
             insert(this.root, data);
         }
     }
-    private void insert(Node<T> root, T data) {
-        if (root.data.compareTo(data) > 0) {
-            if (root.lchild == null) {
-                root.lchild = new Node<T>(data);
-            } else {
-                insert(root.lchild, data);
-            }
-        } else {
-            if (root.rchild == null) {
-                root.rchild = new Node<T>(data);
-            } else {
-                insert(root.rchild, data);
-            }
-        }
-    }
+//    private void insert(Node<T> root, T data) {
+//        if (root.data.compareTo(data) > 0) {
+//            if (root.lchild == null) {
+//                root.lchild = new Node<T>(data);
+//            } else {
+//                insert(root.lchild, data);
+//            }
+//        } else {
+//            if (root.rchild == null) {
+//                root.rchild = new Node<T>(data);
+//            } else {
+//                insert(root.rchild, data);
+//            }
+//        }
+//    }
 
     //Using scanner to populate the tree - node values are entered by the user.
     public void populate(Scanner scanner) {
@@ -218,7 +218,7 @@ public class BinaryTree<T extends Comparable<T>> extends tree.tree{
 
     //count the number of leaf nodes in the tree and display the nodes
     public void countLeafNodes() {
-        System.out.println("Number of leaf nodes in the tree: " + countLeafNodes(root));
+        System.out.println(" : Number of leaf nodes in the tree: " + countLeafNodes(root));
     }
     private int countLeafNodes(Node<T> node) {
         if (node == null)
@@ -232,7 +232,7 @@ public class BinaryTree<T extends Comparable<T>> extends tree.tree{
 
     //count the number of nodes with only one child and display the nodes
     public void countNodesWithOneChild() {
-        System.out.println("Number of nodes with only one child: " + countNodesWithOneChild(root));
+        System.out.println(" : Number of nodes with only one child: " + countNodesWithOneChild(root));
     }
     private int countNodesWithOneChild(Node<T> node) {
         if (node == null)
@@ -244,6 +244,55 @@ public class BinaryTree<T extends Comparable<T>> extends tree.tree{
         return countNodesWithOneChild(node.lchild) + countNodesWithOneChild(node.rchild);
     }
 
+    //count the number of nodes with two children and display the nodes
+    public void countNodesWithTwoChildren() {
+        System.out.println(" : Number of nodes with two children: " + countNodesWithTwoChildren(root));
+    }
+    private int countNodesWithTwoChildren(Node<T> node) {
+        if (node == null)
+            return 0;
+        if (node.lchild != null && node.rchild != null) {
+            System.out.print(node.data + " ");
+            return 1;
+        }
+        return countNodesWithTwoChildren(node.lchild) + countNodesWithTwoChildren(node.rchild);
+    }
 
+    //count the number of nodes at given level in the tree and diaplay the nodes
+    public void countNodesAtGivenLevel(int level) {
+        System.out.println("(Considering root as level 0)");
+        System.out.println(" : Number of nodes at level " + level + ": " + countNodesAtGivenLevel(root, level));
+    }
+    private int countNodesAtGivenLevel(Node<T> node, int level) {
+        if (node == null)
+            return 0;
+        if (level == 0) {
+            System.out.print(node.data + " ");
+            return 1;
+        }
+        return countNodesAtGivenLevel(node.lchild, level - 1) + countNodesAtGivenLevel(node.rchild, level - 1);
+    }
 
+    // Search for a node in the tree
+    public void search(T data) {
+        System.out.println("Searching for node with data: " + data);
+        if (search(root, data)) {
+            System.out.println("Node found");
+        } else {
+            System.out.println("Node not found");
+        }
+    }
+    private boolean search(Node<T> node, T data) {
+        if (node == null)
+            return false;
+        if (node.data.equals(data))
+            return true;
+
+        boolean res1 = search(node.lchild, data);
+        if (res1)
+            return true;
+
+        boolean res2 = search(node.rchild, data);
+        return res2;
+    }
 }

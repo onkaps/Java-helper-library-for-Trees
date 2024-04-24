@@ -16,6 +16,11 @@ public class Main {
          intBT.levelOrder();
          intBT.countNodes();
          intBT.countLeafNodes();
+         intBT.countNodesWithOneChild();
+         intBT.countNodesWithTwoChildren();
+         intBT.countNodesAtGivenLevel(1);
+         intBT.search(10);
+         intBT.search(69);
 
 
     }
