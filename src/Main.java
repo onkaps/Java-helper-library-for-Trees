@@ -1,7 +1,9 @@
-import tree.binaryTree.BinaryTree;
 
+import tree.binaryTree.BinaryTree;
 import java.lang.*;
 import java.util.*;
+
+
 
 public class Main {
     public static void main (String[] args) {
@@ -19,8 +21,14 @@ public class Main {
          intBT.countNodesWithOneChild();
          intBT.countNodesWithTwoChildren();
          intBT.countNodesAtGivenLevel(1);
-         intBT.search(10);
-         intBT.search(69);
+         intBT.longestPath();
+         intBT.search("10");
+         intBT.search("7");
+         intBT.search("69");
+         intBT.search("8");
+         intBT.delete("10");
+         intBT.inorder();
+
 
 
     }

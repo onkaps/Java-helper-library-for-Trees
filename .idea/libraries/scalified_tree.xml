@@ -2,7 +2,7 @@
   <library name="scalified.tree" type="repository">
     <properties maven-id="com.scalified:tree:0.2.5" />
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/scalified/tree/0.2.5/tree-0.2.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/tree-0.2.5.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

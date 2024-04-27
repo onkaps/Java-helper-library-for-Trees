@@ -14,32 +14,9 @@ public class BinaryTree<T extends Comparable<T>> extends tree.tree{
     }
     private Node<T> root;
 
-    //Using hard coded values to populate the tree - node values are entered by the programmer.
-    public void insert(Node<T> root, T data) {
-        if (data == null)
-            throw new IllegalArgumentException("Data cannot be null");
+    //using hardcoded values to populate the tree - node values are entered by the programmer.
 
-        if (this.root == null) {
-            this.root = new Node<T>(data);
-        } else {
-            insert(this.root, data);
-        }
-    }
-//    private void insert(Node<T> root, T data) {
-//        if (root.data.compareTo(data) > 0) {
-//            if (root.lchild == null) {
-//                root.lchild = new Node<T>(data);
-//            } else {
-//                insert(root.lchild, data);
-//            }
-//        } else {
-//            if (root.rchild == null) {
-//                root.rchild = new Node<T>(data);
-//            } else {
-//                insert(root.rchild, data);
-//            }
-//        }
-//    }
+
 
     //Using scanner to populate the tree - node values are entered by the user.
     public void populate(Scanner scanner) {
@@ -60,7 +37,6 @@ public class BinaryTree<T extends Comparable<T>> extends tree.tree{
             node.lchild = new Node<>(leftData);
             populate(scanner, node.lchild);
         }
-
         System.out.println("Enter the right child of " + node.data + " (or type 'null' to skip): ");
         String rightInput = scanner.next();
         if (!rightInput.equalsIgnoreCase("null")) {
@@ -274,9 +250,9 @@ public class BinaryTree<T extends Comparable<T>> extends tree.tree{
     }
 
     // Search for a node in the tree
-    public void search(T data) {
+    public void search(String data) {
         System.out.println("Searching for node with data: " + data);
-        if (search(root, data)) {
+        if (search(root, parseInput(data))) {
             System.out.println("Node found");
         } else {
             System.out.println("Node not found");
@@ -287,12 +263,75 @@ public class BinaryTree<T extends Comparable<T>> extends tree.tree{
             return false;
         if (node.data.equals(data))
             return true;
+        return search(node.lchild, data) || search(node.rchild, data);
+    }
 
-        boolean res1 = search(node.lchild, data);
-        if (res1)
-            return true;
+    //Longest path in the tree from root to leaf
+    public void longestPath() {
+        System.out.println("Longest path in the tree from root to leaf: ");
+        List<T> path = new ArrayList<>();
+        List<T> longestPath = longestPath(root, path);
+        for (T data : longestPath) {
+            System.out.print(data + " ");
+        }
+        System.out.println();
+    }
+    private List<T> longestPath(Node<T> node, List<T> path) {
+        if (node == null)
+            return new ArrayList<>();
+        path.add(node.data);
+        if (node.lchild == null && node.rchild == null) {
+            return path;
+        }
+        List<T> leftPath = longestPath(node.lchild, new ArrayList<>(path));
+        List<T> rightPath = longestPath(node.rchild, new ArrayList<>(path));
+        return leftPath.size() > rightPath.size() ? leftPath : rightPath;
+    }
 
-        boolean res2 = search(node.rchild, data);
-        return res2;
+    //Delete a node from the tree
+    public void delete(String data) {
+        System.out.println("Deleting node with data: " + data);
+        root = delete(root, parseInput(data));
+    }
+    private Node<T> delete(Node<T> node, T data) {
+        if (node == null)
+            return null;
+        if (node.data.compareTo(data) > 0) {
+            node.lchild = delete(node.lchild, data);
+        } else if (node.data.compareTo(data) < 0) {
+            node.rchild = delete(node.rchild, data);
+        } else {
+            if (node.lchild == null) {
+                return node.rchild;
+            } else if (node.rchild == null) {
+                return node.lchild;
+            } else {
+                node.data = findMin(node.rchild);
+                node.rchild = delete(node.rchild, node.data);
+            }
+        }
+        return node;
+    }
+    private T findMin(Node<T> node) {
+        while (node.lchild != null) {
+            node = node.lchild;
+        }
+        return node.data;
+    }
+
+    //Mirror the tree
+    public void mirror() {
+        System.out.println("Mirroring the tree: ");
+        mirror(root);
+        System.out.println();
+    }
+    private void mirror(Node<T> node) {
+        if (node == null)
+            return;
+        Node<T> temp = node.lchild;
+        node.lchild = node.rchild;
+        node.rchild = temp;
+        mirror(node.lchild);
+        mirror(node.rchild);
     }
 }
